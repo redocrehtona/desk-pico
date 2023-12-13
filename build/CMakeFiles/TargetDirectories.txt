@@ -169,5 +169,7 @@
 /home/eric/git-projects/desk-pico/build/pico-sdk/docs/CMakeFiles/rebuild_cache.dir
 /home/eric/git-projects/desk-pico/build/FREERTOS_KERNEL/CMakeFiles/edit_cache.dir
 /home/eric/git-projects/desk-pico/build/FREERTOS_KERNEL/CMakeFiles/rebuild_cache.dir
+/home/eric/git-projects/desk-pico/build/src/CMakeFiles/desk-pico.dir
+/home/eric/git-projects/desk-pico/build/src/CMakeFiles/ELF2UF2Build.dir
 /home/eric/git-projects/desk-pico/build/src/CMakeFiles/edit_cache.dir
 /home/eric/git-projects/desk-pico/build/src/CMakeFiles/rebuild_cache.dir

@@ -18,3 +18,12 @@ e55f33bb903d9c7ab5b6e5405fddd9c6 pico-sdk/src/rp2_common/tinyusb/pioasm/src/Pioa
 792a15e0db1733d0c182429f596e473d pico-sdk/src/rp2_common/tinyusb/pioasm/src/PioasmBuild-stamp/PioasmBuild-update
 ed1aba8471762f8e243af81bd7fdd807 pico-sdk/src/rp2_common/tinyusb/usb_rx.pio.h
 e5b76bf15ea5f0b9aba87a2beee8b6a4 pico-sdk/src/rp2_common/tinyusb/usb_tx.pio.h
+ddfce9cb50b3f8afdc407844388a0306 src/CMakeFiles/ELF2UF2Build
+0c01426623160863455a452be3126178 src/CMakeFiles/ELF2UF2Build-complete
+5fdc4e613e2c2577f35ba5d2ae95f618 src/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-build
+c9cdfe12315a7df4eaa85869fdc0baed src/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-configure
+98e5ac19298925694f7e337f88ec7251 src/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-download
+8f57a2dca298b88417cc33121c139043 src/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-install
+fab09d10be96ebeb2882a230b565cb2f src/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-mkdir
+2d727d16bf5a697d9c53d3df3d56b830 src/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-patch
+81c3db4d354365db8c73356b247d5915 src/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-update

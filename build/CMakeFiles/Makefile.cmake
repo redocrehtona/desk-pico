@@ -13,6 +13,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.28.0/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.28.0/CMakeSystem.cmake"
   "pico-sdk/src/rp2_common/tinyusb/pioasm/tmp/PioasmBuild-mkdirs.cmake"
+  "src/elf2uf2/tmp/ELF2UF2Build-mkdirs.cmake"
   "/home/eric/git-projects/desk-pico/lib/FreeRTOS-Kernel/portable/ThirdParty/GCC/RP2040/CMakeLists.txt"
   "/home/eric/git-projects/desk-pico/lib/FreeRTOS-Kernel/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.cmake"
   "/home/eric/git-projects/desk-pico/lib/FreeRTOS-Kernel/portable/ThirdParty/GCC/RP2040/library.cmake"
@@ -118,6 +119,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/eric/git-projects/desk-pico/lib/pico-sdk/src/rp2_common/pico_unique_id/CMakeLists.txt"
   "/home/eric/git-projects/desk-pico/lib/pico-sdk/src/rp2_common/tinyusb/CMakeLists.txt"
   "/home/eric/git-projects/desk-pico/lib/pico-sdk/tools/CMakeLists.txt"
+  "/home/eric/git-projects/desk-pico/lib/pico-sdk/tools/FindELF2UF2.cmake"
   "/home/eric/git-projects/desk-pico/lib/pico-sdk/tools/FindPioasm.cmake"
   "/home/eric/git-projects/desk-pico/src/CMakeLists.txt"
   "/usr/share/cmake/Modules/CMakeASMInformation.cmake"
@@ -246,6 +248,11 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "pico-sdk/src/rp2040/hardware_structs/CMakeFiles/CMakeDirectoryInformation.cmake"
   "pico-sdk/docs/CMakeFiles/CMakeDirectoryInformation.cmake"
   "FREERTOS_KERNEL/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "src/elf2uf2/tmp/ELF2UF2Build-mkdirs.cmake"
+  "src/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-source_dirinfo.txt"
+  "src/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-update-info.txt"
+  "src/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-patch-info.txt"
+  "src/elf2uf2/tmp/ELF2UF2Build-cfgcmd.txt"
   "src/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
@@ -258,4 +265,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "pico-sdk/src/rp2_common/tinyusb/CMakeFiles/tinyusb_pico_pio_usb_usb_tx_pio_h.dir/DependInfo.cmake"
   "pico-sdk/src/rp2_common/tinyusb/CMakeFiles/tinyusb_pico_pio_usb_usb_rx_pio_h.dir/DependInfo.cmake"
   "pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/cyw43_driver_picow_cyw43_bus_pio_spi_pio_h.dir/DependInfo.cmake"
+  "src/CMakeFiles/desk-pico.dir/DependInfo.cmake"
+  "src/CMakeFiles/ELF2UF2Build.dir/DependInfo.cmake"
   )
