@@ -15,7 +15,7 @@ set(CMAKE_CXX_STANDARD 17)
 pico_sdk_init()
 
 # Include the directory containing the port-specific config file for FreeRTOS
-include_directories(port)
+include_directories(port/FreeRTOS-Kernel)
 
 # Include the FreeRTOS makefile
 include(lib/FreeRTOS-Kernel/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.cmake)
