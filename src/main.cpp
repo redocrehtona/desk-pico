@@ -3,20 +3,57 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-void vBlinkTask(void* unused_arg) {
+#include <stdio.h>
+#include "hardware/i2c.h"
+
+
+void setRelay(int relay, bool state) {
+
+	const uint sda_pin = 20;
+	const uint scl_pin = 21;
+
+	i2c_inst_t *i2c = i2c0;
+
+	stdio_init_all();
+
+	i2c_init(i2c, 400 * 1000);
+
+	gpio_set_function(sda_pin, GPIO_FUNC_I2C);
+	gpio_set_function(scl_pin, GPIO_FUNC_I2C);
+
+
+	uint16_t data = 0xffff;
+	uint8_t msg[2] = { 0x00, 0x00 };
+	uint16_t mask = 0x0000;
+
+	mask |= ( state << relay );
+	
+	data ^= mask;
+
+	msg[0] = (uint8_t)((data & 0xff00) >> 8); msg[1] = (uint8_t)(data & 0x00ff);
+
+	i2c_write_blocking(i2c, 0x20, msg, 2, true);
+}
+
+void vTestTask(void* unused_arg) {
+	int relay = 0;
 	for (;;) {
 		gpio_put(PICO_DEFAULT_LED_PIN, 1);
+		setRelay(relay, 1);
 		vTaskDelay(250);
 		gpio_put(PICO_DEFAULT_LED_PIN, 0);
+		setRelay(relay, 0);
 		vTaskDelay(250);
+		relay++;
 	}
 }
+
 
 int main() {
 	gpio_init(PICO_DEFAULT_LED_PIN);
 	gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
-	xTaskCreate(vBlinkTask, "Blink", 128, NULL, 1, NULL);
+	xTaskCreate(vTestTask, "Test Task", 4096, NULL, 1, NULL);
 
 	vTaskStartScheduler();
 }
