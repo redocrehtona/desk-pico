@@ -6,7 +6,9 @@
 #include <stdio.h>
 #include "hardware/i2c.h"
 
+#include "PCF8575.h"
 
+/*
 void setRelay(int relay, bool state) {
 
 	const uint sda_pin = 20;
@@ -34,15 +36,21 @@ void setRelay(int relay, bool state) {
 
 	i2c_write_blocking(i2c, 0x20, msg, 2, true);
 }
+*/
 
 void vTestTask(void* unused_arg) {
 	int relay = 0;
+
+	i2c_inst_t *relays_i2c_bus = i2c0;
+	uint8_t relays_i2c_address = 0x20;
+	PCF8575 relays(20, 21, relays_i2c_bus, relays_i2c_address);
+
 	for (;;) {
 		gpio_put(PICO_DEFAULT_LED_PIN, 1);
-		setRelay(relay, 1);
+		relays.write(relay, 1);
 		vTaskDelay(250);
 		gpio_put(PICO_DEFAULT_LED_PIN, 0);
-		setRelay(relay, 0);
+		relays.write(relay, 0);
 		vTaskDelay(250);
 		relay++;
 	}
