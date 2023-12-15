@@ -40,11 +40,29 @@ class PCF8575{
 		i2c_write_blocking(I2C, I2C_ADDR, msg, 2, true);
 	}
 
-	int read(int pin) {
-		int read_value = -1;
+	int *read() {
+		static int read_values[16] = {
+			0, 0, 0, 0, 0, 0, 0, 0, 
+			0, 0, 0, 0, 0, 0, 0, 0
+		};
 
-		return read_value;
-	}
+		uint8_t read[2] = { 0x00, 0x00 };
+
+		i2c_read_blocking(I2C, I2C_ADDR, read, 2, true);
+
+		// Copy read values to array
+		// First 8-bit integer (pins 0 to 7)
+		for ( int i = 0; i < 8; i++ ) {
+			read_values[i] = ( ( read[0] & (1 << i) ) ? 1 : 0 );
+		}
+		// Second 8-bit integer (pins 8 to 15)
+		for ( int i = 0; i < 8; i++ ) {
+			read_values[i + 8] = ( ( read[1] & (1 << i) ) ? 1 : 0 );
+		}
+
+
+		return read_values;
+	};
 };
 
 #endif
