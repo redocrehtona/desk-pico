@@ -57,20 +57,15 @@ void vWriteTask(void* unused_arg) {
 		}
 	}
 }
-
+ 
 void vReadTask(void* unused_arg) {
 
 	i2c_inst_t *inputs_i2c_bus = i2c0;
 	uint8_t inputs_i2c_address = 0x20;
 	PCF8575 inputs(20, 21, inputs_i2c_bus, inputs_i2c_address);
 
-	// Initualise inputs to be read when pulled low
-	/*
-	for ( int i = 0; i < 16; i++ ) {
-		inputs.write(i, 1);
-		vTaskDelay(250);
-	}
-        */
+        // Initialise pin 15 to be read as an input
+	inputs.write(15, 1);
 	
 	for (;;) {
 		for ( int i = 0; i < 16; i++ ) {
@@ -88,7 +83,7 @@ int main() {
 	gpio_init(PICO_DEFAULT_LED_PIN);
 	gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
-	xTaskCreate(vWriteTask, "Write relay states", 4096, NULL, 1, NULL);
+//	xTaskCreate(vWriteTask, "Write relay states", 4096, NULL, 1, NULL);
 	xTaskCreate(vReadTask, "Read relay states", 8192, NULL, 1, NULL);
 
 	vTaskStartScheduler();

@@ -25,12 +25,12 @@ class PCF8575{
 
 	void write(int pin, bool state) {
 
-		uint16_t data = 0xffff;
+		uint16_t data = 0x0000;
 		uint16_t mask = 0x0000;
 
 		uint8_t msg[2] = { 0x00, 0x00 };
 
-		mask |= ( state << pin );
+		data |= ( state << pin );
 	
 		data ^= mask;
 
