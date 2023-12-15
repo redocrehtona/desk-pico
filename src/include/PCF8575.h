@@ -16,8 +16,6 @@ class PCF8575{
 		I2C = i2c_bus;
 		I2C_ADDR = expander_i2c_address;
 	
-		stdio_init_all();
-	
 		i2c_init(I2C, 400 * 1000);
 	
 		gpio_set_function(sda_pin, GPIO_FUNC_I2C);
@@ -25,11 +23,12 @@ class PCF8575{
 
 	}
 
-	void write(int pin, bool state) {	
+	void write(int pin, bool state) {
 
 		uint16_t data = 0xffff;
-		uint8_t msg[2] = { 0x00, 0x00 };
 		uint16_t mask = 0x0000;
+
+		uint8_t msg[2] = { 0x00, 0x00 };
 
 		mask |= ( state << pin );
 	

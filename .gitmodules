@@ -5,3 +5,6 @@
 	path = lib/FreeRTOS-Kernel
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
 	branch = smp
+[submodule "lib/printf"]
+	path = lib/printf
+	url = https://github.com/mpaland/printf

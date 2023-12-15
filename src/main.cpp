@@ -3,7 +3,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include <stdio.h>
 #include "hardware/i2c.h"
 
 #include "PCF8575.h"
@@ -65,28 +64,32 @@ void vReadTask(void* unused_arg) {
 	uint8_t inputs_i2c_address = 0x20;
 	PCF8575 inputs(20, 21, inputs_i2c_bus, inputs_i2c_address);
 
-	int* ptr; 
+	// Initualise inputs to be read when pulled low
+	/*
+	for ( int i = 0; i < 16; i++ ) {
+		inputs.write(i, 1);
+		vTaskDelay(250);
+	}
+        */
 	
-
 	for (;;) {
-
-		ptr = inputs.read();
-
 		for ( int i = 0; i < 16; i++ ) {
 			printf("%d", inputs.read()[i]);
 			printf("  ");
 		}
 		printf("\n");
-		vTaskDelay(250);
+		vTaskDelay(100);
 
 	}}
 
 int main() {
+	stdio_init_all();
+
 	gpio_init(PICO_DEFAULT_LED_PIN);
 	gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
 	xTaskCreate(vWriteTask, "Write relay states", 4096, NULL, 1, NULL);
-	xTaskCreate(vReadTask, "Read relay states", 4096, NULL, 1, NULL);
+	xTaskCreate(vReadTask, "Read relay states", 8192, NULL, 1, NULL);
 
 	vTaskStartScheduler();
 }
