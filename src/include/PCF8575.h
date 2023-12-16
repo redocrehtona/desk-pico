@@ -10,6 +10,7 @@ class PCF8575{
 	private:
 	i2c_inst_t *I2C;
 	uint8_t I2C_ADDR;
+	uint16_t data = 0x0000;
 
 	public:
 	PCF8575(int sda_pin, int scl_pin, i2c_inst_t *i2c_bus, uint8_t expander_i2c_address) {
@@ -23,16 +24,21 @@ class PCF8575{
 
 	}
 
-	void write(int pin, bool state) {
-
-		uint16_t data = 0x0000;
-		uint16_t mask = 0x0000;
+	void write(bool state, int first_pin, int pin_count) {
+		// If we are setting the bit(s)
+		if (state) {
+			for (int i = 0; i < pin_count; i++) {
+				data |= ((uint8_t)1 << first_pin + i);
+			}
+		}
+		// Else we are clearing the bit(s)
+		else {
+			for (int i = 0; i < pin_count; i++) {
+				data &= ~((uint8_t)1 << first_pin + i);
+			}
+		}
 
 		uint8_t msg[2] = { 0x00, 0x00 };
-
-		data |= ( state << pin );
-	
-		data ^= mask;
 
 		msg[0] = (uint8_t)((data & 0xff00) >> 8); msg[1] = (uint8_t)(data & 0x00ff);
 
