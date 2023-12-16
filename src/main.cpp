@@ -61,38 +61,27 @@ void vWriteTask(void* unused_arg) {
 }
  
 void vReadTask(void* unused_arg) {
-
+	// Create PCF8575 input instance
 	i2c_inst_t *inputs_i2c_bus = i2c0;
-	uint8_t inputs_i2c_address = 0x20;
+	uint8_t inputs_i2c_address = 0x21;
 	PCF8575 inputs(20, 21, inputs_i2c_bus, inputs_i2c_address);
 
-	vTaskDelay(1000);
-        // Initialise pins 8-15 to be read as an input
+	// Create PCF8575 relay instance
+	i2c_inst_t *relays_i2c_bus = i2c0;
+	uint8_t relays_i2c_address = 0x20;
+	PCF8575 relays(20, 21, relays_i2c_bus, relays_i2c_address);
+
+        // Set all pins to high (input/off)
 	inputs.write(1, 0, 16);
+	relays.write(1, 0, 16);
 
 	vTaskDelay(250);
 
-	inputs.write(0, 0, 8);
-
-	vTaskDelay(250);
-
-	inputs.write(1, 0, 1);
-	
 	for (;;) {
 		for ( int i = 0; i < 16; i++ ) {
-			printf("%d", inputs.read()[i]);
-			printf("  ");
+			relays.write(inputs.read()[i], i, 1);
 		}
-		printf("\n");
-		vTaskDelay(100);
-
-	}
-}
-
-void vRunningTask(void* unused_arg) {
-	for (;;) {
-		printf("\nStill Running\n\n");
-		vTaskDelay(5000);
+		vTaskDelay(10);
 	}
 }
 
@@ -104,7 +93,6 @@ int main() {
 
 //	xTaskCreate(vWriteTask, "Write relay states", 4096, NULL, 1, NULL);
 	xTaskCreate(vReadTask, "Read relay states", 8192, NULL, 1, NULL);
-	xTaskCreate(vRunningTask, "Print 'Still Running'", 2048, NULL, 1, NULL);
 
 	vTaskStartScheduler();
 }

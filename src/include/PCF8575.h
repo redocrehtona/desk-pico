@@ -45,8 +45,8 @@ class PCF8575{
 		i2c_write_blocking(I2C, I2C_ADDR, msg, 2, true);
 	}
 
-	int *read() {
-		static int read_values[16] = {
+	bool *read() {
+		static bool read_values[16] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 
 			0, 0, 0, 0, 0, 0, 0, 0
 		};
