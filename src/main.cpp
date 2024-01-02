@@ -1,5 +1,8 @@
 #include "pico/stdlib.h"
 
+//#include "pico/printf.h"
+#include <stdio.h>
+
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -62,14 +65,16 @@ void vWriteTask(void* unused_arg) {
  
 void vReadTask(void* unused_arg) {
 	// Create PCF8575 input instance
-	i2c_inst_t *inputs_i2c_bus = i2c0;
-	uint8_t inputs_i2c_address = 0x21;
-	PCF8575 inputs(20, 21, inputs_i2c_bus, inputs_i2c_address);
+//	i2c_inst_t *inputs_i2c_bus = i2c0;
+//	uint8_t inputs_i2c_address = 0x21;
+//	PCF8575 inputs(20, 21, inputs_i2c_bus, inputs_i2c_address);
+	PCF8575 inputs(20, 21, i2c0, 0x21);
 
 	// Create PCF8575 relay instance
-	i2c_inst_t *relays_i2c_bus = i2c0;
-	uint8_t relays_i2c_address = 0x20;
-	PCF8575 relays(20, 21, relays_i2c_bus, relays_i2c_address);
+//	i2c_inst_t *relays_i2c_bus = i2c0;
+//	uint8_t relays_i2c_address = 0x20;
+//	PCF8575 relays(20, 21, relays_i2c_bus, relays_i2c_address);
+	PCF8575 relays(20, 21, i2c0, 0x20);
 
         // Set all pins to high (input/off)
 	inputs.write(1, 0, 16);
@@ -77,11 +82,17 @@ void vReadTask(void* unused_arg) {
 
 	vTaskDelay(250);
 
+	int loops = 0;
+
 	for (;;) {
 		for ( int i = 0; i < 16; i++ ) {
+			printf("Relay: %i	|State: %s\n", i, inputs.read()[i] ? "off" : "on" );
 			relays.write(inputs.read()[i], i, 1);
+			vTaskDelay(1);
 		}
-		vTaskDelay(10);
+		loops++;
+		printf("Loops: %d\n\n", loops);
+		vTaskDelay(100);
 	}
 }
 
