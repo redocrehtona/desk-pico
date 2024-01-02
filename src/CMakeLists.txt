@@ -2,12 +2,10 @@ cmake_minimum_required(VERSION 3.12)
 
 # Add source files to executable
 add_executable(desk-pico
-	main.cpp
-	../lib/printf/printf.c)
+	main.cpp)
 
 # Add include files from the 'include' directory
-target_include_directories(desk-pico PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include
-	../lib/printf)
+target_include_directories(desk-pico PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include)
 
 # Link used libraries from pico-sdk and FreeRTOS-Kernel
 target_link_libraries(desk-pico pico_stdlib hardware_i2c hardware_adc FreeRTOS-Kernel FreeRTOS-Kernel-Heap4)
