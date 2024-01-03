@@ -1,6 +1,5 @@
 #include "pico/stdlib.h"
 
-//#include "pico/printf.h"
 #include <stdio.h>
 
 #include "FreeRTOS.h"
@@ -10,89 +9,25 @@
 
 #include "PCF8575.h"
 
-/*
-void setRelay(int relay, bool state) {
-
-	const uint sda_pin = 20;
-	const uint scl_pin = 21;
-
-	i2c_inst_t *i2c = i2c0;
-
-	stdio_init_all();
-
-	i2c_init(i2c, 400 * 1000);
-
-	gpio_set_function(sda_pin, GPIO_FUNC_I2C);
-	gpio_set_function(scl_pin, GPIO_FUNC_I2C);
-
-
-	uint16_t data = 0xffff;
-	uint8_t msg[2] = { 0x00, 0x00 };
-	uint16_t mask = 0x0000;
-
-	mask |= ( state << relay );
-	
-	data ^= mask;
-
-	msg[0] = (uint8_t)((data & 0xff00) >> 8); msg[1] = (uint8_t)(data & 0x00ff);
-
-	i2c_write_blocking(i2c, 0x20, msg, 2, true);
-}
-*/
-
-void vWriteTask(void* unused_arg) {
-	int relay = 0;
-
-	i2c_inst_t *relays_i2c_bus = i2c0;
-	uint8_t relays_i2c_address = 0x20;
-	PCF8575 relays(20, 21, relays_i2c_bus, relays_i2c_address);
-
-	vTaskDelay(1000);
-
-	for (;;) {
-		gpio_put(PICO_DEFAULT_LED_PIN, 1);
-		relays.write(0, relay, 1);
-		vTaskDelay(250);
-		gpio_put(PICO_DEFAULT_LED_PIN, 0);
-		relays.write(0, relay, 0);
-		vTaskDelay(250);
-		relay++;
-		if (relay >= 16) {
-			relay = 0;
-		}
-	}
+void gpio_callback(uint gpio, uint32_t event_mask) {
+	printf("INTERRUPT\n");
 }
  
-void vReadTask(void* unused_arg) {
-	// Create PCF8575 input instance
-//	i2c_inst_t *inputs_i2c_bus = i2c0;
-//	uint8_t inputs_i2c_address = 0x21;
-//	PCF8575 inputs(20, 21, inputs_i2c_bus, inputs_i2c_address);
+void vInputHandler(void* unused_arg) {	
 	PCF8575 inputs(20, 21, i2c0, 0x21);
 
-	// Create PCF8575 relay instance
-//	i2c_inst_t *relays_i2c_bus = i2c0;
-//	uint8_t relays_i2c_address = 0x20;
-//	PCF8575 relays(20, 21, relays_i2c_bus, relays_i2c_address);
 	PCF8575 relays(20, 21, i2c0, 0x20);
 
         // Set all pins to high (input/off)
 	inputs.write(1, 0, 16);
 	relays.write(1, 0, 16);
-
-	vTaskDelay(250);
-
+	
 	int loops = 0;
 
 	for (;;) {
-		for ( int i = 0; i < 16; i++ ) {
-			printf("Relay: %i	|State: %s\n", i, inputs.read()[i] ? "off" : "on" );
-			relays.write(inputs.read()[i], i, 1);
-			vTaskDelay(1);
-		}
+		printf("Running for %d seconds\nPin 16 state: %d\n", loops, gpio_get(16));
 		loops++;
-		printf("Loops: %d\n\n", loops);
-		vTaskDelay(100);
+		vTaskDelay(1000);
 	}
 }
 
@@ -102,8 +37,12 @@ int main() {
 	gpio_init(PICO_DEFAULT_LED_PIN);
 	gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
-//	xTaskCreate(vWriteTask, "Write relay states", 4096, NULL, 1, NULL);
-	xTaskCreate(vReadTask, "Read relay states", 8192, NULL, 1, NULL);
+	gpio_init(16);
+	gpio_set_dir(16, GPIO_IN);
+
+	gpio_set_irq_enabled_with_callback(16, GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
+
+	xTaskCreate(vInputHandler, "Read relay states", 8192, NULL, 1, NULL);
 
 	vTaskStartScheduler();
 }
